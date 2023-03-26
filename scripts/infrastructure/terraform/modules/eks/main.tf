@@ -11,18 +11,6 @@ locals {
   cluster_security_group_id = aws_eks_cluster.eks_cluster.vpc_config[0].cluster_security_group_id
 }
 
-resource "aws_security_group" "worker_group_mgmt_one" {
-  name_prefix = "worker_group_mgmt_one"
-  description = "EKS worker group management one"
-  vpc_id      = var.vpc_id
-}
-
-resource "aws_security_group" "worker_group_mgmt_two" {
-  name_prefix = "worker_group_mgmt_two"
-  description = "EKS worker group management two"
-  vpc_id      = var.vpc_id
-}
-
 module "eks" {
   source = "terraform-aws-modules/eks/aws"
 
