@@ -1,0 +1,15 @@
+project_id    = "<YOUR_GCP_PROJECT_ID>"
+region        = "us-central1"
+vpc_name      = "<YOUR_GCP_VPC_NAME>"
+subnet_name   = "<YOUR_GCP_SUBNET_NAME>"
+cluster_name  = "my-gke-cluster"
+min_nodes     = 1
+max_nodes     = 5
+machine_type  = "n1-standard-2"
+
+aws_region    = "us-west-2"
+vpc_id        = "<YOUR_AWS_VPC_ID>"
+subnet_ids    = ["<YOUR_AWS_SUBNET_ID1>", "<YOUR_AWS_SUBNET_ID2>"]
+instance_type = "t2.small"
+key_name      = "<YOUR_AWS_KEY_PAIR_NAME>"
+role_arn      = "<YOUR_AWS_EKS_ROLE_ARN>"
