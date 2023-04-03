@@ -1,0 +1,5 @@
+{           "use_query": "False",
+            "path_to_csv_or_query": "gs://path/to/input_csv.csv",
+            "path_to_config_file": "gs://path/to/config.json",
+            "path_to_model": "gs://path/to/xgboost_model.json"
+}

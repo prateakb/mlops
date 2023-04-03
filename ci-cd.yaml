@@ -1,0 +1,126 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - main
+
+env:
+  GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  CHANGED_DIRS_FILE: changed_dirs.txt
+
+jobs:
+  determine_changed_modules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Determine Changed Modules
+        run: |
+          echo "the changed models are"
+          echo $(bash ./scripts/determine_changed_modules.sh)
+          bash ./scripts/determine_changed_modules.sh > ${{ env.CHANGED_DIRS_FILE }}
+      - name: Upload changed_dirs.txt
+        uses: actions/upload-artifact@v2
+        with:
+          fetch-depth: 0
+          name: changed-dirs
+          path: ${{ env.CHANGED_DIRS_FILE }}
+
+  test:
+    runs-on: ubuntu-latest
+    needs: determine_changed_modules
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Authenticate with gcloud
+        uses: google-github-actions/auth@v0.6.0
+        with:
+          credentials_json: ${{ env.GCLOUD_AUTH }}
+      - name: Download changed_dirs.txt
+        uses: actions/download-artifact@v2
+        with:
+          name: changed-dirs
+      - name: Run tests
+        run: |
+          while IFS= read -r dir; do
+            if [[ -n "$dir" ]]; then
+              cd "$dir" && make test && cd ../.. || exit 1;
+            fi
+          done < ${{ env.CHANGED_DIRS_FILE }}
+
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    if: failure() == false
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Authenticate with gcloud
+        uses: google-github-actions/auth@v0.6.0
+        with:
+          credentials_json: ${{ env.GCLOUD_AUTH }}
+      - name: Authenticate Docker with GCR
+        run: gcloud auth configure-docker
+      - name: Download changed_dirs.txt
+        uses: actions/download-artifact@v2
+        with:
+          name: changed-dirs
+      - name: Build
+        run: |
+          pip install kfp google-cloud-aiplatform
+          while IFS= read -r dir; do
+            if [[ -n "$dir" ]]; then
+              cd "$dir" && make build && cd ../.. || exit 1;
+            fi
+          done < ${{ env.CHANGED_DIRS_FILE }}
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && failure() == false
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Authenticate with gcloud
+        uses: google-github-actions/auth@v0.6.0
+        with:
+          credentials_json: ${{ env.GCLOUD_AUTH }}
+      - name: Setup Service Account
+        run: echo '${{ env.GCLOUD_AUTH }}' > creds.json
+      - name: Authenticate with gcloud
+        run: |
+          gcloud auth activate-service-account --key-file=creds.json
+      - name: Set GOOGLE_APPLICATION_CREDENTIALS
+        run: |
+          export GOOGLE_APPLICATION_CREDENTIALS=creds.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/creds.json" >> $GITHUB_ENV
+
+      - name: Authenticate Docker with GCR
+        run: |
+          gcloud auth configure-docker --quiet
+      - name: Download changed_dirs.txt
+        uses: actions/download-artifact@v2
+        with:
+          name: changed-dirs
+      - name: Deploy
+        run: |
+          while IFS= read -r dir; do
+            if [[ -n "$dir" ]]; then
+              cd "$dir" && make deploy && cd ../.. || exit 1;
+            fi
+          done < ${{ env.CHANGED_DIRS_FILE }}
+
+
+

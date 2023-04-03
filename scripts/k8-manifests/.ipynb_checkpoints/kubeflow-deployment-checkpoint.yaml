@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubeflow
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: kubeflow
+    spec:
+      containers:
+        - name: kubeflow-master
+          image: gcr.io/kubeflow/master
+          ports:
+            - containerPort: 8080
+            protocol: TCP
+      - name: kubeflow-worker
+          image: gcr.io/kubeflow/worker
+          ports:
+            - containerPort: 8081
+            protocol: TCP
+      - name: kubeflow-worker
+          image: gcr.io/kubeflow/worker
+          ports:
+            - containerPort: 8082
+            protocol: TCP
+    volumes:
+      - name: kubeflow-data
+        emptyDir: {}
+      - name: kubeflow-logs
+        emptyDir: {}
+    resources:
+      requests:
+        memory: 2Gi
+        cpu: 1
+    serviceAccount:
+      create: true
+      metadata:
+        name: kubeflow

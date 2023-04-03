@@ -1,0 +1,12 @@
+FROM python:3.9
+
+ARG PIPELINE_FILE
+
+RUN pip install kfp>=2.0.0
+
+WORKDIR /app
+
+COPY $PIPELINE_FILE /app
+COPY make-pipeline-run.py /scripts
+
+CMD ["bash"]
