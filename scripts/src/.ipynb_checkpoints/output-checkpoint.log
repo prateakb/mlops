@@ -1,0 +1,53 @@
+[*********************100%***********************]  1 of 1 completed
+Shape of DataFrame:  (2956, 8)
+Index(['date',
+       'Consumer_Price_Index_for_All_Urban_Consumers_Nondurables_in_Northeast_Size_Class_A',
+       'Industrial_Capacity_Manufacturing_Durable_Goods_Nonmetallic_Mineral_Product_NAICS_327_',
+       'Total_Consumer_Credit_Owned_and_Securitized_by_Nonfinancial_Business',
+       'Consumer_Price_Index_for_All_Urban_Consumers_Apparel_in_West',
+       'Liabilities_and_Capital_Capital_Capital_Paid_in_Wednesday_Level_in_Federal_Reserve_District_9_Minneapolis',
+       'Industrial_Production_Manufacturing_Non_Durable_Goods_Other_Food_NAICS_3119_',
+       'Consumer_Price_Index_for_All_Urban_Consumers_Footwear_in_U_S_City_Average',
+       'Industrial_Production_Durable_Goods_Materials_Other_Durable_Materials',
+       'Nonrevolving_Consumer_Credit_Securitized_by_Depository_Institutions',
+       ...
+       'Hong_Kong_Dollars_to_U_S_Dollar_Spot_Exchange_Rate', 'stock_price',
+       'Volume', 'open', 'high', 'low', 'close', 'volume', 'tic', 'day'],
+      dtype='object', length=143)
+        date  Consumer_Price_Index_for_All_Urban_Consumers_Nondurables_in_Northeast_Size_Class_A  ...  day  daily_return
+0 2019-04-01                                             229.17                                   ...  0.0           NaN
+1 2019-04-01                                             229.17                                   ...  1.0      0.001729
+2 2019-04-01                                             229.17                                   ...  2.0     -0.015907
+3 2019-04-01                                             229.17                                   ...  3.0     -0.001849
+4 2019-04-01                                             229.17                                   ...  4.0      0.006648
+
+[5 rows x 144 columns] Index(['date',
+       'Consumer_Price_Index_for_All_Urban_Consumers_Nondurables_in_Northeast_Size_Class_A',
+       'Industrial_Capacity_Manufacturing_Durable_Goods_Nonmetallic_Mineral_Product_NAICS_327_',
+       'Total_Consumer_Credit_Owned_and_Securitized_by_Nonfinancial_Business',
+       'Consumer_Price_Index_for_All_Urban_Consumers_Apparel_in_West',
+       'Liabilities_and_Capital_Capital_Capital_Paid_in_Wednesday_Level_in_Federal_Reserve_District_9_Minneapolis',
+       'Industrial_Production_Manufacturing_Non_Durable_Goods_Other_Food_NAICS_3119_',
+       'Consumer_Price_Index_for_All_Urban_Consumers_Footwear_in_U_S_City_Average',
+       'Industrial_Production_Durable_Goods_Materials_Other_Durable_Materials',
+       'Nonrevolving_Consumer_Credit_Securitized_by_Depository_Institutions',
+       ...
+       'stock_price', 'Volume', 'open', 'high', 'low', 'close', 'volume',
+       'tic', 'day', 'daily_return'],
+      dtype='object', length=144)
+Length of train_data columns: 144
+Index(['date',
+       'Consumer_Price_Index_for_All_Urban_Consumers_Nondurables_in_Northeast_Size_Class_A',
+       'Industrial_Capacity_Manufacturing_Durable_Goods_Nonmetallic_Mineral_Product_NAICS_327_',
+       'Total_Consumer_Credit_Owned_and_Securitized_by_Nonfinancial_Business',
+       'Consumer_Price_Index_for_All_Urban_Consumers_Apparel_in_West',
+       'Liabilities_and_Capital_Capital_Capital_Paid_in_Wednesday_Level_in_Federal_Reserve_District_9_Minneapolis',
+       'Industrial_Production_Manufacturing_Non_Durable_Goods_Other_Food_NAICS_3119_',
+       'Consumer_Price_Index_for_All_Urban_Consumers_Footwear_in_U_S_City_Average',
+       'Industrial_Production_Durable_Goods_Materials_Other_Durable_Materials',
+       'Nonrevolving_Consumer_Credit_Securitized_by_Depository_Institutions',
+       ...
+       'stock_price', 'Volume', 'open', 'high', 'low', 'close', 'volume',
+       'tic', 'day', 'daily_return'],
+      dtype='object', length=144)
+creating environment
