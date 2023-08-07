@@ -1,5 +1,21 @@
 #!/bin/bash
+
+# Description: Script to create a new real-time model
+# Usage: ./create-realtime-model.sh
+
+# Exit on any error
 set -e
+
+# Prompt for the name of the pipeline run
+read -p "What is the name of the pipeline run? " nameofproject
+# Validate the pipeline name (add specific validation logic here)
+export PIPELINE_NAME="${nameofproject}"
+echo "${PIPELINE_NAME}" | tr -dc '[:alnum:]\n\r' | tr ' ' '-' > PIPELINE_NAME
+
+# Create the model directory and copy templates
+mkdir -p models/${PIPELINE_NAME}/
+cp -r templates/realtime_pipelines/* models/${PIPELINE_NAME}/
+
 MAKEFILE_CONTENT="\
 test:\n\
 \t@echo 'checking if syntax of all python files are correct' \\\\\n\
@@ -10,10 +26,6 @@ build:\n\
 deploy:\n\
 \tbash ../../scripts/deploy-realtime.sh"
 
-read -p 'What is the name of the pipeline run?' nameofproject
-export PIPELINE_NAME="${nameofproject}" 
-echo "${PIPELINE_NAME}"| tr -dc '[:alnum:]\n\r' | tr ' ' '-' > PIPELINE_NAME
-export PIPELINE_NAME=$(cat PIPELINE_NAME) 
 echo $(date)>VERSION
 mkdir -p models/${PIPELINE_NAME}/
 cp -r templates/realtime_pipelines/model models/${PIPELINE_NAME}

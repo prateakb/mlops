@@ -1,15 +1,28 @@
 #!/bin/bash
 
+# Description: Script to determine changed modules between the current branch and the main branch
+# Usage: ./determine_changed_modules.sh
+
+# Validate that the script is being run inside a Git repository
+if [ ! -d ".git" ]; then
+  echo "Error: This script must be run inside a Git repository."
+  exit 1
+fi
+
 # Fetch the origin/main branch
+echo "Fetching origin/main..."
 git fetch origin main
 
 # Determine the current branch
 current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Determine the comparison reference
 if [ "$current_branch" == "main" ]; then
-    # Find the parent of the current commit
+    # Find the parent of the current commit if on the main branch
     parent_commit=$(git log --pretty=format:"%H" -n 2 | tail -n 1)
     comparison="$parent_commit"
 else
+    # Compare with origin/main if on a different branch
     comparison="origin/main"
 fi
 

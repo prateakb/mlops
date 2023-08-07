@@ -1,5 +1,12 @@
 #!/bin/bash
+
+# Description: Script to create a new batch model by copying specific templates and files
+# Usage: ./create-batch-model.sh
+
+# Exit on any error
 set -e
+
+# Files to copy to the new batch model
 FILES_TO_COPY_TO_NEW_MODEL=(
     "templates/Dockerfile"
     "templates/README.md"
@@ -12,6 +19,14 @@ FILES_TO_COPY_TO_NEW_MODEL=(
     "templates/schema/"
     "templates/outputs"
 )
+
+# Validate that the files exist
+for file in "${FILES_TO_COPY_TO_NEW_MODEL[@]}"; do
+  if [ ! -f "$file" ] && [ ! -d "$file" ]; then
+    echo "Error: File or directory '$file' not found."
+    exit 1
+  fi
+done
 
 cat > makefile_temp << EOM
 
